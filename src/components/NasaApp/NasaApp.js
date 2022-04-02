@@ -2,8 +2,7 @@ import { useEffect, useContext } from "react";
 import { Context } from "../../store/Store";
 import GridImages from "../GridImages/GridImages";
 import { getManifests, updatePhotos } from "../helper/apiCalls";
-
-import { UPDATE_FILTER_ROVER } from "../../reducer/AppReducer";
+import Filters from "../Filters/Filters";
 
 const NasaApp = () => {
   const [state, dispatch] = useContext(Context);
@@ -15,43 +14,13 @@ const NasaApp = () => {
   }, []);
 
   useEffect(() => {
-    console.log("FILTER UPDATED");
+    console.log("FILTER UPDATED", state.filters);
     updatePhotos(state, dispatch);
   }, [state.filters]);
 
   return (
     <>
-      NASA APP
-      <button
-        onClick={() =>
-          dispatch({
-            type: UPDATE_FILTER_ROVER,
-            payload: "opportunity",
-          })
-        }
-      >
-        OPORTUNITY
-      </button>
-      <button
-        onClick={() =>
-          dispatch({
-            type: UPDATE_FILTER_ROVER,
-            payload: "curiosity",
-          })
-        }
-      >
-        CURIOSITY
-      </button>
-      <button
-        onClick={() =>
-          dispatch({
-            type: UPDATE_FILTER_ROVER,
-            payload: "spirit",
-          })
-        }
-      >
-        SPIRIT
-      </button>
+      <Filters />
       <GridImages />
     </>
   );

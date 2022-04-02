@@ -18,7 +18,7 @@ export const generateGetPhotosUrl = ({
 }) => {
   const cameraQP = generateQuery("camera", camera);
   const solDateQP = generateQuery("sol", sol);
-  const earthDateQP = generateQuery("earth", earth);
+  const earthDateQP = generateQuery("earth_date", earth);
   const dateQP = solDateQP || earthDateQP;
   const pageQP = generateQuery("page", page);
 

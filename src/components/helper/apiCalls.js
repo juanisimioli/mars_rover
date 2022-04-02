@@ -36,13 +36,14 @@ export async function updatePhotos(state, dispatch) {
 
   const params = {
     rover: state.filters.rover,
-    camera: null,
-    earth: null,
-    sol: state.filters.currentDate,
+    camera: state.filters.camera,
+    earth:  state.filters.currentDate,
+    sol: null,
     page: 1,
   };
 
   const url = generateGetPhotosUrl(params);
+  console.log('URL ---> ', url)
   const response = await fetch(url);
   const photosData = await response.json();
 

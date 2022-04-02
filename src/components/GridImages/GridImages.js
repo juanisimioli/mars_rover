@@ -1,22 +1,12 @@
 import { Container } from "./Container/Container";
 import Image from "../Image/Image"
-import { useEffect, useState } from "react";
-import { generateGetPhotosUrl } from "../helper/getUrls";
+import { useContext } from "react";
+import { Context } from "../../store/Store";
 
 
 const GridImages = () => {
-
-  const [photos, setPhotos] =useState([]);
-
-  useEffect(()=> {
-    const params= {
-      rover: 'curiosity',
-      sol: 1050
-    }
-    const url = generateGetPhotosUrl(params)
-    console.log(url)
-
-  }, [])
+  const [state, dispatch] = useContext(Context);
+  const {photos} = state;
 
   return (
     <Container>

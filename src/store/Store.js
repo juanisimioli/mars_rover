@@ -7,8 +7,8 @@ const initialState = {
   isLoadingPhotos: false,
   filters: {
 		rover: null,
-		camera: null,
-		dateType: 'sol',
+		camera: 'all',
+		dateType: 'earth',
 		currentDate: null
 	},
   currentRover: {
@@ -18,7 +18,7 @@ const initialState = {
 		maxSolDate: null,
     totalPhotos: null,
 	},
-  manifests: {},
+  manifests: [],
   photos: []
 }
 

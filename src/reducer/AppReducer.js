@@ -1,6 +1,8 @@
 // ACTIONS
 export const GET_MANIFESTS = "GET_MANIFESTS";
 export const UPDATE_FILTER_ROVER = "UPDATE_FILTER_ROVER";
+export const UPDATE_FILTER_CAMERA = "UPDATE_FILTER_CAMERA";
+export const UPDATE_EARTH_DATE = "UPDATE_EARTH_DATE";
 export const UPDATE_PHOTOS = "UPDATE_PHOTOS";
 export const LOAD_PHOTOS = "LOAD_PHOTOS";
 
@@ -66,17 +68,29 @@ const Reducer = (state, action) => {
         },
       };
 
-    case "LOAD_PHOTOS":
+    case LOAD_PHOTOS:
       return {
         ...state,
         isLoadingPhotos: true,
       };
 
-    case "UPDATE_PHOTOS":
+    case UPDATE_PHOTOS:
       return {
         ...state,
         photos: action.payload,
         isLoadingPhotos: false,
+      };
+
+    case UPDATE_EARTH_DATE:
+      return {
+        ...state,
+        filters: { ...state.filters, currentDate: action.payload },
+      };
+
+    case UPDATE_FILTER_CAMERA:
+      return {
+        ...state,
+        filters: { ...state.filters, camera: action.payload },
       };
 
     default:
