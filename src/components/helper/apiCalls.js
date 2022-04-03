@@ -14,6 +14,7 @@ export async function getManifests(dispatch) {
 
   const fetchManifest = async ({ slug }) => {
     const manifestUrl = generateManifestUrl(slug);
+    console.log(manifestUrl)
     const response = await fetch(manifestUrl);
     const manifestData = await response.json();
 

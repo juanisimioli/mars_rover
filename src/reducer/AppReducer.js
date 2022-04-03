@@ -52,7 +52,7 @@ const Reducer = (state, action) => {
         [];
 
       // total photos for selected rover in latest available day
-      const currentDay = getDayFromManifest(manifestRover, maxSolDate);
+      const currentDay = getDayFromManifest(manifestRover, SOL, maxSolDate);
 
       return {
         ...state,
