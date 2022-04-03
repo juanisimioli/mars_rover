@@ -6,4 +6,13 @@ export const getAvailableDates = (manifest, dateType) => [
 ];
 
 export const getDayFromManifest = (manifest, typeDate, newDate) =>
-  manifest.photos.find((date) => date[typeDate]?.toString() === newDate?.toString());
+  manifest.photos.find(
+    (date) => date[typeDate]?.toString() === newDate?.toString()
+  );
+
+export const checkHasMorePhotos = (photosLength, totalPhotos) => {
+  return (
+    photosLength % 25 === 0 &&
+    photosLength < totalPhotos
+  );
+};

@@ -19,6 +19,7 @@ import {
   getAvailableDates,
   getRoverManifest,
   getDayFromManifest,
+  checkHasMorePhotos,
 } from "./helper";
 
 // REDUCER
@@ -64,14 +65,17 @@ const Reducer = (state, action) => {
           currentSolDate: maxSolDate,
         },
         currentRover: {
-          currentPage: 1,
           camerasAvailable,
           minEarthDate,
           maxEarthDate,
           maxSolDate,
-          totalPhotos: currentDay.total_photos,
           availableEarthDate: [...earthAvailable],
           availableSolDate: [...solAvailable],
+        },
+        pagination: {
+          ...state.pagination,
+          currentPage: 1,
+          totalPhotos: currentDay.total_photos,
         },
       };
     }
@@ -84,6 +88,7 @@ const Reducer = (state, action) => {
       const newSolDate = action.payload;
       const currentDay = getDayFromManifest(manifestRover, SOL, newSolDate);
 
+      console.log("Revisar 1", currentDay.total_photos);
       return {
         ...state,
         filters: {
@@ -96,6 +101,9 @@ const Reducer = (state, action) => {
           ...state.currentRover,
           camerasAvailable: [...currentDay.cameras],
           currentTypeDate: SOL,
+        },
+        pagination: {
+          ...state.pagination,
           totalPhotos: currentDay.total_photos,
           currentPage: 1,
         },
@@ -127,6 +135,9 @@ const Reducer = (state, action) => {
           ...state.currentRover,
           camerasAvailable: [...currentDay.cameras],
           currentTypeDate: EARTH_DATE,
+        },
+        pagination: {
+          ...state.pagination,
           totalPhotos: currentDay.total_photos,
           currentPage: 1,
         },
@@ -139,8 +150,8 @@ const Reducer = (state, action) => {
       return {
         ...state,
         filters: { ...state.filters, camera: action.payload },
-        currentRover: {
-          ...state.currentRover,
+        pagination: {
+          ...state.pagination,
           currentPage: 1,
         },
       };
@@ -161,27 +172,44 @@ const Reducer = (state, action) => {
     }
 
     case UPDATE_PHOTOS: {
+      const hasMorePhotos = checkHasMorePhotos(
+        action.payload.length,
+        state.pagination.totalPhotos
+      );
       return {
         ...state,
         photos: action.payload,
         isLoadingPhotos: false,
+        pagination: {
+          ...state.pagination,
+          hasMorePhotos,
+        },
       };
     }
 
     case UPDATE_MORE_PHOTOS: {
+      const photos = [...state.photos, ...action.payload];
+      const hasMorePhotos = checkHasMorePhotos(
+        photos.length,
+        state.pagination.totalPhotos
+      );
       return {
         ...state,
-        photos: [...state.photos, ...action.payload],
+        photos,
         isLoadingPhotos: false,
+        pagination: {
+          ...state.pagination,
+          hasMorePhotos,
+        },
       };
     }
 
     case UPDATE_CURRENT_PAGE: {
       return {
         ...state,
-        currentRover: {
-          ...state.currentRover,
-          currentPage: state.currentRover.currentPage + 1,
+        pagination: {
+          ...state.pagination,
+          currentPage: state.pagination.currentPage + 1,
         },
       };
     }

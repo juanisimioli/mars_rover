@@ -21,7 +21,7 @@ const NasaApp = () => {
   useEffect(() => {
     console.log("LOADING MORE CHANGED", state);
     updatePhotos(state, dispatch);
-  }, [state.currentRover.currentPage]);
+  }, [state.pagination.currentPage]);
 
   return (
     <>

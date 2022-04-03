@@ -19,9 +19,12 @@ const initialState = {
 		maxEarthDate: undefined,
 		maxSolDate: undefined,
     availableSolDate: [],
+	},
+  pagination: {
     currentPage: 1,
     totalPhotos: undefined,
-	},
+    hasMorePhotos: undefined,
+  },
   manifests: [],
   photos: []
 }

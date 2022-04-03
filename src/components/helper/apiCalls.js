@@ -14,7 +14,7 @@ export async function getManifests(dispatch) {
 
   const fetchManifest = async ({ slug }) => {
     const manifestUrl = generateManifestUrl(slug);
-    console.log(manifestUrl)
+    console.log(manifestUrl);
     const response = await fetch(manifestUrl);
     const manifestData = await response.json();
 
@@ -34,6 +34,10 @@ export async function getManifests(dispatch) {
 export async function updatePhotos(state, dispatch) {
   if (!state.filters.rover) return null;
 
+  const {
+    pagination: { hasMorePhotos },
+  } = state;
+
   const cameraToUse =
     state.filters.camera === ALL ? null : state.filters.camera;
 
@@ -44,7 +48,7 @@ export async function updatePhotos(state, dispatch) {
   const params = {
     rover: state.filters.rover,
     camera: cameraToUse,
-    page: state.currentRover.currentPage,
+    page: state.pagination.currentPage,
     typeDate: state.currentRover.currentTypeDate,
     earth: state.filters.currentEarthDate,
     sol: state.filters.currentSolDate,
@@ -54,12 +58,12 @@ export async function updatePhotos(state, dispatch) {
   const response = await fetch(url);
   const photosData = await response.json();
 
-  if (state.currentRover.currentPage === 1) {
+  if (state.pagination.currentPage === 1) {
     dispatch({
       type: UPDATE_PHOTOS,
       payload: photosData.photos ?? [],
     });
-  } else if (state.photos.length < state.currentRover.totalPhotos) {
+  } else if (hasMorePhotos) {
     dispatch({
       type: UPDATE_MORE_PHOTOS,
       payload: photosData.photos ?? [],

@@ -12,13 +12,13 @@ const GridImages = () => {
 
   const {
     filters: { rover: roverSelected },
+    pagination: { hasMorePhotos },
   } = state;
 
+  console.log("AQUI", hasMorePhotos);
+
   const handleLoadMore = () => {
-    if (
-      state.photos.length % 25 === 0 &&
-      state.photos.length < state.currentRover.totalPhotos
-    ) {
+    if (hasMorePhotos) {
       dispatch({
         type: UPDATE_CURRENT_PAGE,
       });
@@ -27,19 +27,19 @@ const GridImages = () => {
 
   return (
     <>
-      <div>{`PAGE: ${state.currentRover.currentPage}`}</div>
+      <div>{`PAGE: ${state.pagination.currentPage}`}</div>
       <div>{`CURRENT PHOTOS: ${state.photos.length}`}</div>
-      <div>{`TOTAL PHOTOS: ${state.currentRover.totalPhotos}`}</div>
+      <div>{`TOTAL PHOTOS: ${state.pagination.totalPhotos}`}</div>
       <button onClick={handleLoadMore}>+</button>
       {roverSelected && (
         <InfiniteScroll
           dataLength={state.photos.length}
           next={handleLoadMore}
-          hasMore={state.photos.length < state.currentRover.totalPhotos}
-          loader={<h4>Loading...</h4>}
+          hasMore={hasMorePhotos}
+          loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
           endMessage={
             <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
+              <b>You have seen it all!</b>
             </p>
           }
         >
