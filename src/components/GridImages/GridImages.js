@@ -15,8 +15,6 @@ const GridImages = () => {
     pagination: { hasMorePhotos },
   } = state;
 
-  console.log("AQUI", hasMorePhotos);
-
   const handleLoadMore = () => {
     if (hasMorePhotos) {
       dispatch({
