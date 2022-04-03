@@ -1,26 +1,5 @@
 export const data = {
   title: "Mars Rover Photos",
-  filters: {
-    buttonSave: "Save Filters",
-    buttonLoad: "Load Filters",
-    types: [
-      {
-        id: 1,
-        label: "Rover",
-        slug: "rovers",
-      },
-      {
-        id: 2,
-        label: "Camera",
-        slug: "camera",
-      },
-      {
-        id: 3,
-        label: "Date Type",
-        slug: "dateType",
-      },
-    ],
-  },
   nasa_api: {
     types: {
       rover: [
@@ -42,10 +21,6 @@ export const data = {
           slug: "spirit",
           camerasId: [20, 21, 29, 30, 31],
         },
-      ],
-      dateType: [
-        { id: 1, label: "Martian Sol", slug: "martian_sol" },
-        { id: 2, label: "Earth Date", slug: "earth_date" },
       ],
       camera: [
         {

@@ -1,10 +1,13 @@
 import { data } from "../../data/data";
+import { ALL } from "../../constants/constants";
 import { generateManifestUrl, generateGetPhotosUrl } from "./getUrls";
 import {
   GET_MANIFESTS,
   UPDATE_PHOTOS,
-  LOAD_PHOTOS,
-} from "../../reducer/AppReducer";
+  UPDATE_MORE_PHOTOS,
+  LOADER_PHOTOS_ON,
+  LOADER_PHOTOS_OFF,
+} from "../../reducer/constants";
 
 export async function getManifests(dispatch) {
   const rovers = data.nasa_api.types.rover;
@@ -30,25 +33,39 @@ export async function getManifests(dispatch) {
 export async function updatePhotos(state, dispatch) {
   if (!state.filters.rover) return null;
 
+  const cameraToUse =
+    state.filters.camera === ALL ? null : state.filters.camera;
+
   dispatch({
-    type: LOAD_PHOTOS,
+    type: LOADER_PHOTOS_ON,
   });
 
   const params = {
     rover: state.filters.rover,
-    camera: state.filters.camera,
-    earth:  state.filters.currentDate,
-    sol: null,
-    page: 1,
+    camera: cameraToUse,
+    page: state.currentRover.currentPage,
+    typeDate: state.currentRover.currentTypeDate,
+    earth: state.filters.currentEarthDate,
+    sol: state.filters.currentSolDate,
   };
 
   const url = generateGetPhotosUrl(params);
-  console.log('URL ---> ', url)
   const response = await fetch(url);
   const photosData = await response.json();
 
-  dispatch({
-    type: UPDATE_PHOTOS,
-    payload: photosData.photos ?? [],
-  });
+  if (state.currentRover.currentPage === 1) {
+    dispatch({
+      type: UPDATE_PHOTOS,
+      payload: photosData.photos ?? [],
+    });
+  } else if (state.photos.length < state.currentRover.totalPhotos) {
+    dispatch({
+      type: UPDATE_MORE_PHOTOS,
+      payload: photosData.photos ?? [],
+    });
+  } else {
+    dispatch({
+      type: LOADER_PHOTOS_OFF,
+    });
+  }
 }

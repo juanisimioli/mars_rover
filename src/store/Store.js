@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react";
+import { EARTH_DATE, ALL } from "../constants/constants";
 
 import AppReducer from "../reducer/AppReducer";
 
@@ -6,17 +7,20 @@ const initialState = {
   isLoadingApp: true,
   isLoadingPhotos: false,
   filters: {
-		rover: null,
-		camera: 'all',
-		dateType: 'earth',
-		currentDate: null
+		rover: undefined,
+		camera: ALL,
+		currentEarthDate: undefined,
+    currentSolDate: undefined,    
 	},
-  currentRover: {
-		currentPage: null,
-		minDate: null,
-		maxDate: null,
-		maxSolDate: null,
-    totalPhotos: null,
+  currentRover: {		
+    currentTypeDate: EARTH_DATE,
+    availableEarthDate: [],
+		minEarthDate: undefined,
+		maxEarthDate: undefined,
+		maxSolDate: undefined,
+    availableSolDate: [],
+    currentPage: 1,
+    totalPhotos: undefined,
 	},
   manifests: [],
   photos: []

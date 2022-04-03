@@ -18,6 +18,11 @@ const NasaApp = () => {
     updatePhotos(state, dispatch);
   }, [state.filters]);
 
+  useEffect(() => {
+    console.log("LOADING MORE CHANGED", state);
+    updatePhotos(state, dispatch);
+  }, [state.currentRover.currentPage]);
+
   return (
     <>
       <Filters />

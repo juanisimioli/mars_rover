@@ -1,25 +1,42 @@
 import React, { useContext } from "react";
 import { Context } from "../../store/Store";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Tooltip from "@mui/material/Tooltip";
-import { data } from "../../data/data";
+
+// ACTIONS
 import {
   UPDATE_FILTER_ROVER,
-  UPDATE_EARTH_DATE,
   UPDATE_FILTER_CAMERA,
-} from "../../reducer/AppReducer";
+  UPDATE_FILTER_EARTH_DATE,
+  UPDATE_FILTER_SOL_DATE,
+} from "../../reducer/constants";
 
+import { data } from "../../data/data";
+
+import { ALL } from "../../constants/constants";
+
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const Filters = () => {
   const [state, dispatch] = useContext(Context);
   const {
-    filters: { rover: roverSelected, camera: cameraSelected, currentDate },
-    currentRover: { minDate, maxDate, camerasAvailable },
+    filters: {
+      rover: roverSelected,
+      camera: cameraSelected,
+      currentEarthDate,
+      currentSolDate,
+    },
+    currentRover: {
+      minEarthDate,
+      maxEarthDate,
+      camerasAvailable,
+      availableSolDate,
+      availableEarthDate,
+    },
   } = state;
 
   const { rover: roverList, camera: cameraList } = data.nasa_api.types;
@@ -43,7 +60,7 @@ const Filters = () => {
     const newDate = e?.toISOString().slice(0, 10);
 
     dispatch({
-      type: UPDATE_EARTH_DATE,
+      type: UPDATE_FILTER_EARTH_DATE,
       payload: newDate,
     });
   };
@@ -51,6 +68,18 @@ const Filters = () => {
   const cameraForRoverSelected = roverList.find(
     (rover) => rover.slug === roverSelected
   )?.camerasId;
+
+  const handleChangeSol = (e, valuex) => {
+    valuex &&
+      dispatch({
+        type: UPDATE_FILTER_SOL_DATE,
+        payload: valuex,
+      });
+  };
+
+  function disableWeekends(date) {
+    return !availableEarthDate?.includes(date.toISOString().slice(0, 10));
+  }
 
   return (
     <>
@@ -81,31 +110,47 @@ const Filters = () => {
                 <ToggleButton
                   disabled={!camerasAvailable?.includes(abbreviation)}
                   value={slug}
+                  key={`camera_${id}`}
                 >
-                  {/* <Tooltip key={`camera_${id}`} title={label}> */}
                   {slug}
-                  {/* </Tooltip> */}
                 </ToggleButton>
               );
             }
             return null;
           })}
-          <ToggleButton value={null}>All</ToggleButton>
+          <ToggleButton value={ALL}>All</ToggleButton>
         </ToggleButtonGroup>
       )}
       <br></br>
       {/* EARTH DATE */}
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DesktopDatePicker
-          label="Earth Date"
-          disabled={!roverSelected}
-          value={new Date(currentDate?.replace(/-/g, "/"))}
-          minDate={new Date(minDate?.replace(/-/g, "/"))}
-          maxDate={new Date(maxDate?.replace(/-/g, "/"))}
-          onChange={handleChangeEarthDate}
-          renderInput={(params) => <TextField {...params} />}
+      {currentEarthDate && (
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DesktopDatePicker
+            format="DD-MM-YYYY"
+            label="Earth Date"
+            shouldDisableDate={disableWeekends}
+            disabled={!roverSelected}
+            value={new Date(currentEarthDate?.replace(/-/g, "/"))}
+            minDate={new Date(minEarthDate?.replace(/-/g, "/"))}
+            maxDate={new Date(maxEarthDate?.replace(/-/g, "/"))}
+            onChange={handleChangeEarthDate}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+      )}
+      {/* SOL DATE */}
+      {currentSolDate && (
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={availableSolDate}
+          value={currentSolDate?.toString()}
+          onChange={handleChangeSol}
+          sx={{ width: 300 }}
+          disableClearable={true}
+          renderInput={(params) => <TextField {...params} label="Sol Days" />}
         />
-      </LocalizationProvider>
+      )}
     </>
   );
 };
