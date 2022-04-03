@@ -13,6 +13,7 @@ import {
   LOADER_PHOTOS_ON,
   LOADER_PHOTOS_OFF,
   UPDATE_CURRENT_PAGE,
+  UPDATE_FILTERS_FROM_LOCAL_STORAGE,
 } from "../reducer/constants";
 
 import {
@@ -33,11 +34,13 @@ const Reducer = (state, action) => {
       };
     }
 
-    case UPDATE_FILTER_ROVER: {
-      const newRover = action.payload;
+    case UPDATE_FILTERS_FROM_LOCAL_STORAGE: {
+      if (!state.manifests.length) return { ...state };
 
-      // select manifest for current rover
-      const manifestRover = getRoverManifest(state, newRover);
+      const { rover, camera, currentEarthDate, currentSolDate } =
+        action.payload;
+
+      const manifestRover = getRoverManifest(state.manifests, rover);
 
       // generate arrays fot earth and sol dates availables for selected rover
       const earthAvailable = getAvailableDates(manifestRover, EARTH_DATE);
@@ -49,8 +52,59 @@ const Reducer = (state, action) => {
 
       // cameras available for selected rover
       const camerasAvailable =
-        manifestRover.photos.find((day) => maxSolDate === day[SOL]).cameras ??
-        [];
+        manifestRover.photos.find(
+          (day) => currentSolDate.toString() === day[SOL].toString()
+        )?.cameras ?? [];
+
+      // total photos for selected rover in latest available day
+      const currentDay = getDayFromManifest(manifestRover, SOL, currentSolDate);
+
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          rover,
+          camera,
+          currentEarthDate,
+          currentSolDate,
+        },
+        currentRover: {
+          ...state.currentRover,
+          camerasAvailable,
+          minEarthDate,
+          maxEarthDate,
+          maxSolDate,
+          availableEarthDate: [...earthAvailable],
+          availableSolDate: [...solAvailable],
+        },
+        pagination: {
+          ...state.pagination,
+          currentPage: 1,
+          totalPhotos: currentDay.total_photos,
+        },
+      };
+    }
+
+    case UPDATE_FILTER_ROVER: {
+      if (!state.manifests.length) return { ...state };
+
+      const newRover = action.payload;
+      // select manifest for current rover
+      const manifestRover = getRoverManifest(state.manifests, newRover);
+
+      // generate arrays fot earth and sol dates availables for selected rover
+      const earthAvailable = getAvailableDates(manifestRover, EARTH_DATE);
+      const solAvailable = getAvailableDates(manifestRover, SOL);
+
+      const minEarthDate = manifestRover.landing_date;
+      const maxEarthDate = manifestRover.max_date;
+      const maxSolDate = manifestRover.max_sol;
+
+      // cameras available for selected rover
+      const camerasAvailable =
+        manifestRover.photos.find(
+          (day) => maxSolDate.toString() === day[SOL].toString()
+        ).cameras ?? [];
 
       // total photos for selected rover in latest available day
       const currentDay = getDayFromManifest(manifestRover, SOL, maxSolDate);
@@ -65,6 +119,7 @@ const Reducer = (state, action) => {
           currentSolDate: maxSolDate,
         },
         currentRover: {
+          ...state.currentRover,
           camerasAvailable,
           minEarthDate,
           maxEarthDate,
@@ -84,11 +139,13 @@ const Reducer = (state, action) => {
       // no action if is still loading photos
       if (state.isLoadingPhotos) return { ...state };
 
-      const manifestRover = getRoverManifest(state, state.filters.rover);
+      const manifestRover = getRoverManifest(
+        state.manifests,
+        state.filters.rover
+      );
       const newSolDate = action.payload;
       const currentDay = getDayFromManifest(manifestRover, SOL, newSolDate);
 
-      console.log("Revisar 1", currentDay.total_photos);
       return {
         ...state,
         filters: {
@@ -114,7 +171,10 @@ const Reducer = (state, action) => {
       // no action if is still loading photos
       if (state.isLoadingPhotos) return { ...state };
 
-      const manifestRover = getRoverManifest(state, state.filters.rover);
+      const manifestRover = getRoverManifest(
+        state.manifests,
+        state.filters.rover
+      );
       const newEarthDate = action.payload;
 
       const currentDay = getDayFromManifest(

@@ -6,18 +6,16 @@ import FilterDate from "./FilterDate/FilterDate";
 import FilterCamera from "./FilterCamera/FilterCamera";
 
 const Filters = () => {
-  const [state, ] = useContext(Context);
+  const [state] = useContext(Context);
   const {
-    filters: { rover: roverSelected, camera: currentSolDate },
+    filters: { rover: roverSelected },
   } = state;
 
   return (
     <>
-        Rover
+      Rover
       <FilterRover />
-
       <br></br>
-
       {roverSelected && <FilterDate />}
       <br></br>
       Camera

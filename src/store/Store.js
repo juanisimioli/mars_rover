@@ -7,27 +7,27 @@ const initialState = {
   isLoadingApp: true,
   isLoadingPhotos: false,
   filters: {
-		rover: undefined,
-		camera: ALL,
-		currentEarthDate: undefined,
-    currentSolDate: undefined,    
-	},
-  currentRover: {		
+    rover: undefined,
+    camera: ALL,
+    currentEarthDate: undefined,
+    currentSolDate: undefined,
+  },
+  currentRover: {
     currentTypeDate: EARTH_DATE,
     availableEarthDate: [],
-		minEarthDate: undefined,
-		maxEarthDate: undefined,
-		maxSolDate: undefined,
+    minEarthDate: undefined,
+    maxEarthDate: undefined,
+    maxSolDate: undefined,
     availableSolDate: [],
-	},
+  },
   pagination: {
     currentPage: 1,
     totalPhotos: undefined,
     hasMorePhotos: undefined,
   },
   manifests: [],
-  photos: []
-}
+  photos: [],
+};
 
 const FormStore = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);

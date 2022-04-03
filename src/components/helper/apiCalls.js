@@ -8,13 +8,13 @@ import {
   LOADER_PHOTOS_ON,
   LOADER_PHOTOS_OFF,
 } from "../../reducer/constants";
+import { setFiltersFromLocalStorage } from "../helper/localStorage";
 
 export async function getManifests(dispatch) {
   const rovers = data.nasa_api.types.rover;
 
   const fetchManifest = async ({ slug }) => {
     const manifestUrl = generateManifestUrl(slug);
-    console.log(manifestUrl);
     const response = await fetch(manifestUrl);
     const manifestData = await response.json();
 
@@ -53,6 +53,14 @@ export async function updatePhotos(state, dispatch) {
     earth: state.filters.currentEarthDate,
     sol: state.filters.currentSolDate,
   };
+
+  const saveFilters = {
+    rover: params.rover,
+    camera: params.camera,
+    currentEarthDate: params.earth,
+    currentSolDate: params.sol,
+  };
+  setFiltersFromLocalStorage(saveFilters);
 
   const url = generateGetPhotosUrl(params);
   const response = await fetch(url);

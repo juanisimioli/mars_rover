@@ -13,11 +13,14 @@ const FilterRover = () => {
     filters: { rover: roverSelected },
   } = state;
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
+    const newRover = e.target.value;
+
     dispatch({
       type: UPDATE_FILTER_ROVER,
-      payload: e.target.value,
+      payload: newRover,
     });
+  };
   return (
     <ToggleButtonGroup
       color="primary"

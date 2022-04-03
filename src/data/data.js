@@ -44,7 +44,7 @@ export const data = {
         {
           id: 23,
           label: "Chemistry and Camera Complex",
-          slug: "chencam",
+          slug: "chemcam",
           abbreviation: "CHEMCAM",
         },
         {
@@ -74,7 +74,7 @@ export const data = {
         {
           id: 31,
           label: "Miniature Thermal Emission Spectrometer (Mini-TES)",
-          slug: "minities",
+          slug: "minites",
           abbreviation: "MINITES",
         },
       ],
