@@ -5,6 +5,7 @@ import { Context } from "../../store/Store";
 import { UPDATE_CURRENT_PAGE } from "../../reducer/constants";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const GridImages = () => {
   const [state, dispatch] = useContext(Context);
@@ -29,6 +30,7 @@ const GridImages = () => {
       <div>{`CURRENT PHOTOS: ${state.photos.length}`}</div>
       <div>{`TOTAL PHOTOS: ${state.pagination.totalPhotos}`}</div>
       <button onClick={handleLoadMore}>+</button>
+      <ErrorMessage />
       {roverSelected && (
         <InfiniteScroll
           dataLength={state.photos.length}

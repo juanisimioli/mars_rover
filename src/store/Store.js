@@ -25,6 +25,7 @@ const initialState = {
     totalPhotos: undefined,
     hasMorePhotos: undefined,
   },
+  errorMessage: undefined,
   manifests: [],
   photos: [],
 };

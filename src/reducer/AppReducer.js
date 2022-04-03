@@ -1,5 +1,5 @@
 // CONSTANTS
-import { SOL, ALL, EARTH_DATE } from "../constants/constants";
+import { SOL, ALL, EARTH_DATE, ERROR_MESSAGE } from "../constants/constants";
 
 // ACTIONS
 import {
@@ -14,6 +14,7 @@ import {
   LOADER_PHOTOS_OFF,
   UPDATE_CURRENT_PAGE,
   UPDATE_FILTERS_FROM_LOCAL_STORAGE,
+  SHOW_ERROR,
 } from "../reducer/constants";
 
 import {
@@ -244,6 +245,7 @@ const Reducer = (state, action) => {
           ...state.pagination,
           hasMorePhotos,
         },
+        errorMessage: null,
       };
     }
 
@@ -261,6 +263,7 @@ const Reducer = (state, action) => {
           ...state.pagination,
           hasMorePhotos,
         },
+        errorMessage: null,
       };
     }
 
@@ -271,6 +274,13 @@ const Reducer = (state, action) => {
           ...state.pagination,
           currentPage: state.pagination.currentPage + 1,
         },
+      };
+    }
+
+    case SHOW_ERROR: {
+      return {
+        ...state,
+        errorMessage: ERROR_MESSAGE,
       };
     }
 
