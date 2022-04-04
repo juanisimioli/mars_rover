@@ -11,7 +11,7 @@ REACT_APP_NASA_API_KEY=DEMO_KEY
 
 REACT_APP_BASE_URL_NASA_API=https://api.nasa.gov/mars-photos/api/v1
 
-*demo key must be replaced by an api key generated in https://api.nasa.gov/.
+*DEMO_KEY must be replaced by an api key generated in https://api.nasa.gov/.
 
 ### `npm start`
 
