@@ -8,6 +8,7 @@ You can choose a Rover and filter photos by date or camera.
 Inside root project, you have to create '.env.local' file, and add these two variables:
 
 REACT_APP_NASA_API_KEY=DEMO_KEY
+
 REACT_APP_BASE_URL_NASA_API=https://api.nasa.gov/mars-photos/api/v1
 
 *demo key must be replaced by an api key generated in https://api.nasa.gov/.
