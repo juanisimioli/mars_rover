@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mars_rover/static/css/main.e6c13ad2.css",
+    "main.js": "/mars_rover/static/js/main.541f0629.js",
+    "index.html": "/mars_rover/index.html",
+    "main.e6c13ad2.css.map": "/mars_rover/static/css/main.e6c13ad2.css.map",
+    "main.541f0629.js.map": "/mars_rover/static/js/main.541f0629.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.541f0629.js"
+  ]
+}
