@@ -4,36 +4,43 @@ import GridImages from "../GridImages/GridImages";
 import { getManifests, updatePhotos } from "../helper/apiCalls";
 import { checkFiltersOnLocalStorage } from "../helper/localStorage";
 import Filters from "../Filters/Filters";
+import { CircularProgress } from "@mui/material";
+import { Container } from "./Container";
+import { LoaderContainer } from "./LoaderContainer";
 
 const NasaApp = () => {
   const [state, dispatch] = useContext(Context);
-  console.log("STATE", state);
+  const { isLoadingApp } = state;
 
   useEffect(() => {
-    console.log("FIRST TIME");
     getManifests(dispatch);
   }, []);
 
   useEffect(() => {
-    console.log("FILTER UPDATED", state.filters);
     updatePhotos(state, dispatch);
   }, [state.filters]);
 
   useEffect(() => {
-    console.log("PROCEED TO CHECK LOCAL STORAGE");
     checkFiltersOnLocalStorage(state, dispatch);
   }, [state.manifests]);
 
   useEffect(() => {
-    console.log("LOADING MORE CHANGED", state);
     updatePhotos(state, dispatch);
   }, [state.pagination.currentPage]);
 
   return (
-    <>
-      <Filters />
-      <GridImages />
-    </>
+    <Container>
+      {isLoadingApp ? (
+        <LoaderContainer>
+          <CircularProgress />
+        </LoaderContainer>
+      ) : (
+        <>
+          <Filters />
+          <GridImages />
+        </>
+      )}
+    </Container>
   );
 };
 

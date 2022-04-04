@@ -36,6 +36,7 @@ const FilterCamera = () => {
       color="primary"
       value={cameraSelected}
       onChange={handleChange}
+      style={{ flexWrap: "wrap" }}
     >
       {cameraList.map(({ label, slug, id, abbreviation }) => {
         if (cameraForRoverSelected?.includes(id)) {

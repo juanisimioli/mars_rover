@@ -26,6 +26,7 @@ const FilterRover = () => {
       color="primary"
       value={roverSelected}
       onChange={handleChange}
+      style={{ flexWrap: "wrap" }}
     >
       {roverList.map(({ label, slug, id }) => (
         <ToggleButton key={`rover_${id}`} value={slug}>

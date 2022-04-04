@@ -1,10 +1,13 @@
-import { Container } from "./Container/Container";
+import { Container, Img, TitleId } from "./Container/Container";
 
 const Image = ({ id, source }) => {
   return (
-    <a target="_blank" rel="noreferrer" href={source}>
-      <Container alt={`image_${id}`} src={source} />
-    </a>
+    <Container>
+      <a target="_blank" rel="noreferrer" href={source}>
+        <Img alt={`image_${id}`} src={source} />
+        <TitleId>{`Id ${id}`}</TitleId>
+      </a>
+    </Container>
   );
 };
 

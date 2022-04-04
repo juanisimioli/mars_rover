@@ -4,6 +4,8 @@ import { Context } from "../../store/Store";
 import FilterRover from "./FilterRover/FilterRover";
 import FilterDate from "./FilterDate/FilterDate";
 import FilterCamera from "./FilterCamera/FilterCamera";
+import { Container } from "./Container/Container";
+import { Title } from "./Title/Title";
 
 const Filters = () => {
   const [state] = useContext(Context);
@@ -13,13 +15,24 @@ const Filters = () => {
 
   return (
     <>
-      Rover
-      <FilterRover />
-      <br></br>
-      {roverSelected && <FilterDate />}
-      <br></br>
-      Camera
-      {roverSelected && <FilterCamera />}
+      <Container>
+        <Title>Rover</Title>
+        <FilterRover />
+      </Container>
+
+      {roverSelected && (
+        <Container>
+          <Title>Date</Title>
+          <FilterDate />
+        </Container>
+      )}
+
+      {roverSelected && (
+        <Container>
+          <Title>Camera</Title>
+          <FilterCamera />
+        </Container>
+      )}
     </>
   );
 };

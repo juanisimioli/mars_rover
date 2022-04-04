@@ -4,12 +4,13 @@ import {
   UPDATE_FILTER_SOL_DATE,
   UPDATE_FILTER_EARTH_DATE,
 } from "../../../reducer/constants";
-
+import frLocale from "date-fns/locale/fr";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import { Container } from "./Container";
 
 const FilterDate = () => {
   const [state, dispatch] = useContext(Context);
@@ -32,12 +33,16 @@ const FilterDate = () => {
   };
 
   const handleChangeEarthDate = (e) => {
-    const newDate = e?.toISOString().slice(0, 10);
+    const isValidDate =
+      e > new Date(minEarthDate) && e < new Date(maxEarthDate);
 
-    dispatch({
-      type: UPDATE_FILTER_EARTH_DATE,
-      payload: newDate,
-    });
+    if (isValidDate) {
+      const newDate = e?.toISOString().slice(0, 10);
+      dispatch({
+        type: UPDATE_FILTER_EARTH_DATE,
+        payload: newDate,
+      });
+    }
   };
 
   function disableDates(date) {
@@ -45,18 +50,24 @@ const FilterDate = () => {
   }
 
   return (
-    <>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <Container>
+      <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
         <DesktopDatePicker
-          format="DD-MM-YYYY"
-          label="Earth Date"
+          label="Earth (DD-MM-YYYY)"
           shouldDisableDate={disableDates}
           disabled={!roverSelected}
           value={new Date(currentEarthDate?.replace(/-/g, "/"))}
           minDate={new Date(minEarthDate?.replace(/-/g, "/"))}
           maxDate={new Date(maxEarthDate?.replace(/-/g, "/"))}
           onChange={handleChangeEarthDate}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => (
+            <TextField
+              InputProps={{
+                readOnly: true,
+              }}
+              {...params}
+            />
+          )}
         />
       </LocalizationProvider>
 
@@ -68,9 +79,9 @@ const FilterDate = () => {
         onChange={handleChangeSolDate}
         sx={{ width: 300 }}
         disableClearable={true}
-        renderInput={(params) => <TextField {...params} label="Sol Days" />}
+        renderInput={(params) => <TextField {...params} label="Martian Sol" />}
       />
-    </>
+    </Container>
   );
 };
 
